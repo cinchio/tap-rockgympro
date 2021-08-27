@@ -33,7 +33,7 @@ class FacilityStream(Stream):
         if 'bookmark_time' not in self.state[self.stream['stream']]:
             self.state[self.stream['stream']]['bookmark_time'] = {}
 
-        self.state[self.stream['stream']]['bookmark_time'][facility_code] = bookmark_time
+        self.state[self.stream['stream']]['bookmark_time'][facility_code] = bookmark_time.isoformat()
 
     def format_record(self, record):
         return record
