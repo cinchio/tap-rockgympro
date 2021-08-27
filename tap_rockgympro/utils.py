@@ -1,21 +1,15 @@
 import json
-import os
+import pkg_resources
 from time import sleep
-
-
-def get_abs_path(path):
-    return os.path.join(os.path.dirname(os.path.realpath(__file__)), path)
 
 
 # Load schemas from schemas folder
 def load_schemas():
+    schema_names = ['bookings', 'customers', 'facilities']
     schemas = {}
 
-    for filename in os.listdir(get_abs_path('schemas')):
-        path = get_abs_path('schemas') + '/' + filename
-        schema_name = filename.replace('.json', '')
-        with open(path) as file:
-            schemas[schema_name] = json.load(file)
+    for schema_name in schema_names:
+        schemas[schema_name] = json.load(pkg_resources.resource_stream('tap_rockgympro', f'schemas/{schema_name}.json'))
 
     return schemas
 
