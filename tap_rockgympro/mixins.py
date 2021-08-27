@@ -66,8 +66,6 @@ class FacilityStream(Stream):
                                         (self.get_url(code, page, bookmark_time),),
                                         {"auth": (self.config['api_user'], self.config['api_key'])})
 
-                time_extracted = format_date(response['rgpApiTime'])
-
                 if not total_page:
                     total_page = response['rgpApiPaging']['pageTotal'] or 1
 
@@ -98,7 +96,7 @@ class FacilityStream(Stream):
                         has_sent_schema = True
 
                     # Output records
-                    singer.write_records(self.stream['stream'], records, time_extracted=time_extracted)
+                    singer.write_records(self.stream['stream'], records)
 
                 if not bookmark_time or new_bookmark_time > bookmark_time:
                     # If we have a new bookmark time set it to the state
