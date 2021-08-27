@@ -1,7 +1,7 @@
 import requests
 import singer
 
-from tap_rockgympro.utils import rate_handler, format_date
+from tap_rockgympro.utils import rate_handler, format_date, format_date_iso
 
 # Customer endpoint only allows 25 at a time.
 BATCH_SIZE = 25
@@ -36,7 +36,7 @@ class Customers:
                     self.has_sent_schema = True
 
                 # Format records
-                record['lastRecordEdit'] = format_date(record['lastRecordEdit']).isoformat()
+                record['lastRecordEdit'] = format_date_iso(record['lastRecordEdit'])
 
                 singer.write_record(self.stream['stream'], record, time_extracted=time_extracted)
 
