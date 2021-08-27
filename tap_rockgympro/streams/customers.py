@@ -36,7 +36,7 @@ class Customers:
                     self.has_sent_schema = True
 
                 # Format records
-                record['lastRecordEdit'] = format_date(record['lastRecordEdit'])
+                record['lastRecordEdit'] = format_date(record['lastRecordEdit']).isoformat()
 
                 singer.write_record(self.stream['stream'], record, time_extracted=time_extracted)
 

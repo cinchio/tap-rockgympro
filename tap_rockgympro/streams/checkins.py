@@ -3,16 +3,17 @@ from tap_rockgympro.mixins import FacilityStream
 
 class Checkins(FacilityStream):
     def format_record(self, record):
-        record['postDate'] = format_date(record['postDate'])
-        record['checkoutPostDate'] = format_date(record['checkoutPostDate'])
+        record['postDate'] = format_date(record['postDate']).isoformat()
+        record['checkoutPostDate'] = format_date(record['checkoutPostDate']).isoformat()
         return record
 
     def get_updated_time(self, record):
-        return record['postDate'] if not record['checkoutPostDate'] or record['postDate'] > record['checkoutPostDate'] else record['checkoutPostDate']
+        post_date = format_date(record['postDate'])
+        checkout_post_date = format_date(record['checkoutPostDate'])
+        return post_date if not checkout_post_date or post_date > checkout_post_date else checkout_post_date
 
     def get_created_time(self, record):
-        return record['postDate']
-
+        return format_date(record['postDate'])
 
     def get_url(self, code, page, bookmark_time):
         url = super().get_url(code, page, bookmark_time)

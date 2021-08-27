@@ -15,13 +15,15 @@ class Bookings(FacilityStream):
     """
 
     def format_record(self, record):
-        record['bookingDate'] = format_date(record['bookingDate'])
-        record['originalBookedTime'] = format_date(record['originalBookedTime'])
-        record['cancelledOn'] = format_date(record['cancelledOn'])
+        record['bookingDate'] = format_date(record['bookingDate']).isoformat()
+        record['originalBookedTime'] = format_date(record['originalBookedTime']).isoformat()
+        record['cancelledOn'] = format_date(record['cancelledOn']).isoformat()
         return record
 
     def get_updated_time(self, record):
-        return record['bookingDate'] if not record['cancelledOn'] or record['bookingDate'] > record['cancelledOn'] else record['cancelledOn']
+        booking_date = format_date(record['bookingDate'])
+        cancelled_on = format_date(record['cancelledOn'])
+        return booking_date if not cancelled_on or booking_date > cancelled_on else cancelled_on
 
     def get_created_time(self, record):
-        return record['bookingDate']
+        return format_date(record['bookingDate'])

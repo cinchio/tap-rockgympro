@@ -73,9 +73,9 @@ class FacilityStream(Stream):
 
                 for record in response[self.stream['stream']]:
                     # format record
-                    record = self.format_record(record)
                     updated_time = self.get_updated_time(record)
                     created_time = self.get_updated_time(record)
+                    record = self.format_record(record)
 
                     if not new_bookmark_time or created_time > new_bookmark_time:
                         # We've hit a new record.
