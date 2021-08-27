@@ -1,0 +1,58 @@
+{
+    "stream": "bookings",
+    "schema": {
+        "properties": {
+            "bookingId": {
+                "type": "integer"
+            },
+            "courseGuid": {
+                "type": "string"
+            },
+            "customerGuid": {
+                "type": "string"
+            },
+            "bookingDate": {
+                "type": "string",
+                "format": "date-time"
+            },
+            "originalBookedOfferingName": {
+                "type": "string"
+            },
+            "originalBookedTime": {
+                "type": "string",
+                "format": "date-time"
+            },
+            "notes": {
+                "type": "string"
+            },
+            "participantCount": {
+                "type": "integer"
+            },
+            "offeringId": {
+                "type": "integer"
+            },
+            "cancelled": {
+                "type": "boolean"
+            },
+            "cancelledByEmployeeId": {
+                "type": "integer"
+            },
+            "cancelledOn": {
+                "type": "string",
+                "format": "date-time"
+            },
+            "price": {
+                "type": "number"
+            },
+            "customerLinkDatabaseTag": {
+                "type": "string"
+            },
+            "bookingDevice": {
+                "type": "string"
+            }
+        }
+    },
+    "key_properties": [
+        "bookingId"
+    ]
+}

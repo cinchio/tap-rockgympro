@@ -1,0 +1,25 @@
+#!/usr/bin/env python
+
+from setuptools import setup
+
+setup(
+    name="tap-rockgympro",
+    version="0.0.1",
+    description="Singer.io tap for extracting RockGymPro data",
+    author="Cinch",
+    url="https://github.com/cinchio/tap-rockgympro",
+    python_requires='>=3.6.0',
+    py_modules=["tap_rockgympro"],
+    install_requires=[
+        "singer-python==5.12.1",
+    ],
+    entry_points="""
+    [console_scripts]
+    tap-rockgympro=tap_rockgympro:main
+    """,
+    packages=["tap_rockgympro"],
+    package_data = {
+        "schemas": ["tap_rockgympro/schemas/*.json"]
+    },
+    include_package_data=True,
+)

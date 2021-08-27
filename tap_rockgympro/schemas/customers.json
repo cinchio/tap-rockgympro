@@ -1,0 +1,211 @@
+{
+    "stream": "customers",
+    "schema": {
+        "properties": {
+            "customerId": {
+                "type": "integer"
+            },
+            "customerGuid": {
+                "type": "string"
+            },
+            "firstName": {
+                "type": "string"
+            },
+            "lastName": {
+                "type": "string"
+            },
+            "middleName": {
+                "type": "string"
+            },
+            "customerType": {
+                "type": "string"
+            },
+            "barcode": {
+                "type": "string"
+            },
+            "responsiblePartyId": {
+                "type": "integer"
+            },
+            "address1": {
+                "type": "string"
+            },
+            "address2": {
+                "type": "string"
+            },
+            "cellPhone": {
+                "type": "string"
+            },
+            "city": {
+                "type": "string"
+            },
+            "facilityWaiver": {
+                "type": "integer"
+            },
+            "belayCertified": {
+                "type": "string"
+            },
+            "email": {
+                "type": "string"
+            },
+            "emergencyContact": {
+                "type": "string"
+            },
+            "emergencyPhone": {
+                "type": "string"
+            },
+            "membershipExpDate": {
+                "type": "string",
+                "format": "date"
+            },
+            "membershipStartDate": {
+                "type": "string",
+                "format": "date"
+            },
+            "firstContactDate": {
+                "type": "string",
+                "format": "date"
+            },
+            "membershipFormOfPayment": {
+                "type": "string"
+            },
+            "homePhone": {
+                "type": "string"
+            },
+            "lastBilledDate": {
+                "type": "string",
+                "format": "date"
+            },
+            "lastRecordEdit": {
+                "type": "string",
+                "format": "date-time"
+            },
+            "state": {
+                "type": "string"
+            },
+            "workPhone": {
+                "type": "string"
+            },
+            "zip": {
+                "type": "string"
+            },
+            "currentStatus": {
+                "type": "string"
+            },
+            "eftDuesAmount": {
+                "type": "integer"
+            },
+            "lastVisitDate": {
+                "type": "string",
+                "format": "date"
+            },
+            "nextBillDate": {
+                "type": "string",
+                "format": "date"
+            },
+            "bday": {
+                "type": "string",
+                "format": "date"
+            },
+            "isBillable": {
+                "type": "integer"
+            },
+            "earlyInMember": {
+                "type": "integer"
+            },
+            "facilityWaiverDate": {
+                "type": "string",
+                "format": "date"
+            },
+            "policy1Date": {
+                "type": "string",
+                "format": "date"
+            },
+            "policy2Date": {
+                "type": "string",
+                "format": "date"
+            },
+            "policy3Date": {
+                "type": "string",
+                "format": "date"
+            },
+            "policy4Date": {
+                "type": "string",
+                "format": "date"
+            },
+            "policy5Date": {
+                "type": "string",
+                "format": "date"
+            },
+            "policy6Date": {
+                "type": "string",
+                "format": "date"
+            },
+            "policy7Date": {
+                "type": "string",
+                "format": "date"
+            },
+            "eftContractEndDate": {
+                "type": "string",
+                "format": "date"
+            },
+            "excludeFromBilling": {
+                "type": "integer"
+            },
+            "extraDuesAmountList": {
+                "type": "string"
+            },
+            "country": {
+                "type": "string"
+            },
+            "boulderingOnly": {
+                "type": "integer"
+            },
+            "gearIncluded": {
+                "type": "string"
+            },
+            "membershipCannotBeFrozen": {
+                "type": "integer"
+            },
+            "memberNoCheckinJustBill": {
+                "type": "integer"
+            },
+            "subType": {
+                "type": "string"
+            },
+            "facilityAccessType": {
+                "type": "string"
+            },
+            "manualBilling": {
+                "type": "integer"
+            },
+            "rentalGearUntil": {
+                "type": "string",
+                "format": "date"
+            },
+            "archived": {
+                "type": "integer"
+            },
+            "doNotMail": {
+                "type": "integer"
+            },
+            "customText1": {
+                "type": "string"
+            },
+            "customText2": {
+                "type": "string"
+            },
+            "wantsMonthlyBillingEmail": {
+                "type": "integer"
+            },
+            "altFreezeFee": {
+                "type": "string"
+            },
+            "facilityAccessAdditionalGyms": {
+                "type": "string"
+            }
+        }
+    },
+    "key_properties": [
+        "customerGuid"
+    ]
+}

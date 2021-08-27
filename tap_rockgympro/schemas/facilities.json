@@ -1,0 +1,19 @@
+{
+    "stream": "facilities",
+    "schema": {
+        "properties": {
+            "code": {
+                "type": "string"
+            },
+            "name": {
+                "type": "string"
+            },
+            "region": {
+                "type": "string"
+            }
+        }
+    },
+    "key_properties": [
+        "code"
+    ]
+}
