@@ -42,7 +42,7 @@ def rate_handler(func, args, kwargs):
             return response
 
 def format_date(item):
-    if item == '0000-00-00 00:00:00':
+    if item == '0000-00-00 00:00:00' or not item:
         return None
 
     return datetime.strptime(item, "%Y-%m-%d %H:%M:%S").astimezone(UTC)
