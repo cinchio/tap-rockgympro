@@ -19,7 +19,7 @@ setup(
     """,
     packages=find_packages(include=['tap_rockgympro', 'tap_rockgympro.*']),
     package_data = {
-        "schemas": ["tap_rockgympro/schemas/*.json"]
+        "tap_rockgympro": ["tap_rockgympro/schemas/*.json"]
     },
     include_package_data=True,
 )
