@@ -5,8 +5,10 @@ This is a [Singer](https://singer.io) tap that implements the [RockGymPro] API(h
 This tap:
 - Implements the following endpoints:
     - [Bookings](https://api.rockgympro.com/#/Bookings)
+    - [Checkins](https://api.rockgympro.com/#/Checkins)
     - [Customers](https://api.rockgympro.com/#/Customers)
     - [Facilities](https://api.rockgympro.com/#/Facilities)
+    - [Invoices](https://api.rockgympro.com/#/Invoices)
 
 Caveats:
 - Bookings endpoint
@@ -47,4 +49,10 @@ Caveats:
 
 5. Run the Tap in Sync Mode
 
-    tap-shopify -c config.json
+    tap-rockgympro -c config.json
+
+
+## Future
+
+- Implement Staff and Timeclock streams.  They were not needed for Cinch's use case at the time so we haven't implemented them yet.
+- Figure out if there is a usecase for Settings/Versions/Widget EventS streams?

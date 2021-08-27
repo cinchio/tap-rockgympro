@@ -1,14 +1,17 @@
 import json
 import pkg_resources
 from time import sleep
+from datetime import datetime
+from pytz import UTC
+
+from tap_rockgympro.consts import ORDERED_STREAM_NAMES
 
 
 # Load schemas from schemas folder
 def load_schemas():
-    schema_names = ['bookings', 'customers', 'facilities']
     schemas = {}
 
-    for schema_name in schema_names:
+    for schema_name in ORDERED_STREAM_NAMES:
         schemas[schema_name] = json.load(pkg_resources.resource_stream('tap_rockgympro', f'schemas/{schema_name}.json'))
 
     return schemas
@@ -37,3 +40,9 @@ def rate_handler(func, args, kwargs):
             timer *= 2
         else:
             return response
+
+def format_date(item):
+    if item == '0000-00-00 00:00:00':
+        return None
+
+    return datetime.strptime(item, "%Y-%m-%d %H:%M:%S").astimezone(UTC).isoformat()

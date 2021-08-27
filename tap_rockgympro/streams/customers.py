@@ -1,10 +1,7 @@
-from datetime import datetime
-
 import requests
 import singer
-from pytz import UTC
 
-from tap_rockgympro.utils import rate_handler
+from tap_rockgympro.utils import rate_handler, format_date
 
 # Customer endpoint only allows 25 at a time.
 BATCH_SIZE = 25
@@ -31,18 +28,16 @@ class Customers:
                 f"https://api.rockgympro.com/v1/customers?customerGuid={','.join(ids_to_sync[start:start+BATCH_SIZE])}",
             ), {"auth": (self.config['api_user'], self.config['api_key'])})
 
+            time_extracted = format_date(response['rgpApiTime'])
+
             for record in response['customer']:
                 if not self.has_sent_schema:
                     singer.write_schema(self.stream['stream'], self.stream['schema'], self.stream['key_properties'])
                     self.has_sent_schema = True
 
-                if record['lastRecordEdit'] and record['lastRecordEdit'] == '0000-00-00 00:00:00':
-                    record['lastRecordEdit'] = None
-                else:
-                    record['lastRecordEdit'] = datetime.strptime(record['lastRecordEdit'],
-                                                                 "%Y-%m-%d %H:%M:%S").astimezone(UTC).isoformat()
-
                 # Format records
-                singer.write_record(self.stream['stream'], record)
+                record['lastRecordEdit'] = format_date(record['lastRecordEdit'])
+
+                singer.write_record(self.stream['stream'], record, time_extracted=time_extracted)
 
         self.cached_ids = self.cached_ids & ids

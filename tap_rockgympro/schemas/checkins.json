@@ -1,0 +1,66 @@
+{
+    "stream": "checkins",
+    "schema": {
+        "properties": {
+            "checkinId": {
+                "type": "integer"
+            },
+            "customerId": {
+                "type": "integer"
+            },
+            "customerGuid": {
+                "type": "string"
+            },
+            "postDate": {
+                "type": "string",
+                "format": "date-time"
+            },
+            "checkoutPostDate": {
+                "type": "string",
+                "format": "date-time"
+            },
+            "status": {
+                "type": "string"
+            },
+            "level": {
+                "type": "string"
+            },
+            "notes": {
+                "type": "string"
+            },
+            "details": {
+                "type": "string"
+            },
+            "whereDatabaseTag": {
+                "type": "string"
+            },
+            "remoteDatabaseTag": {
+                "type": "string"
+            },
+            "remoteCustomerName": {
+                "type": "string"
+            },
+            "remoteCustomerTypeLabel": {
+                "type": "string"
+            },
+            "remoteCustomerId": {
+                "type": "integer"
+            },
+            "remoteCheckinId": {
+                "type": "integer"
+            },
+            "eventSessionGuid": {
+                "type": "string"
+            },
+            "eventTitle": {
+                "type": "string"
+            },
+            "fromMobileApp": {
+                "type": "integer"
+            }
+        }
+    },
+    "key_properties": [
+        "bookingId"
+    ]
+}

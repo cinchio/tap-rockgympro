@@ -1,0 +1,151 @@
+{
+    "stream": "invoices",
+    "schema": {
+        "properties": {
+            "invoiceId": {
+                "type": "integer"
+            },
+            "customerId": {
+                "type": "integer"
+            },
+            "customerGuid": {
+                "type": "string"
+            },
+            "chargeToCustomerId": {
+                "type": "integer"
+            },
+            "chargeToCustomerGuid": {
+                "type": "string"
+            },
+            "invoicePostDate": {
+                "type": "string",
+                "format": "date+time"
+            },
+            "amount": {
+                "type": "number"
+            },
+            "salesTax": {
+                "type": "number"
+            },
+            "invtype": {
+                "type": "string"
+            },
+            "memo": {
+                "type": "string"
+            },
+            "voidedInvoice": {
+                "type": "integer"
+            },
+            "employeeId": {
+                "type": "integer"
+            },
+            "employeeGuid": {
+                "type": "string"
+            },
+            "paymentId": {
+                "type": "integer"
+            },
+            "billingEventId": {
+                "type": "integer"
+            },
+            "registerId": {
+                "type": "integer"
+            },
+            "customerLoc": {
+                "type": "string"
+            },
+            "onlineTransactionId": {
+                "type": "integer"
+            },
+            "payment": {
+                "type": "object",
+                "properties": {
+                    "paymentId": {
+                        "type": "integer"
+                    },
+                    "customerId": {
+                        "type": "integer"
+                    },
+                    "customerGuid": {
+                        "type": "string"
+                    },
+                    "postdate": {
+                        "type": "string",
+                        "format": "date+time"
+                    },
+                    "amount": {
+                        "type": "number"
+                    },
+                    "source": {
+                        "type": "string"
+                    },
+                    "declined": {
+                        "type": "integer"
+                    },
+                    "voidedpayment": {
+                        "type": "integer"
+                    }
+                }
+            },
+            "items": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "invoiceId": {
+                            "type": "integer"
+                        },
+                        "productId": {
+                            "type": "integer"
+                        },
+                        "revenueCategory": {
+                            "type": "string"
+                        },
+                        "revenueSubcategory": {
+                            "type": "string"
+                        },
+                        "description": {
+                            "type": "string"
+                        },
+                        "price": {
+                            "type": "number"
+                        },
+                        "quantity": {
+                            "type": "integer"
+                        },
+                        "extrainfo": {
+                            "type": "string"
+                        },
+                        "color": {
+                            "type": "string"
+                        },
+                        "size": {
+                            "type": "string"
+                        },
+                        "cost": {
+                            "type": "number"
+                        },
+                        "discountPercent100": {
+                            "type": "integer"
+                        },
+                        "taxExempt": {
+                            "type": "integer"
+                        },
+                        "isTaxItem": {
+                            "type": "integer"
+                        },
+                        "undiscountedPrice": {
+                            "type": "string"
+                        },
+                        "bookingId": {
+                            "type": "integer"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "key_properties": [
+        "invoiceId"
+    ]
+}

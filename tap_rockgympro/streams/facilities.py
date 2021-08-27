@@ -1,10 +1,7 @@
-from datetime import datetime
-
 import requests
 import singer
-from pytz import UTC
 
-from tap_rockgympro.utils import rate_handler
+from tap_rockgympro.utils import rate_handler, format_date
 
 
 class Facilities:
@@ -18,7 +15,7 @@ class Facilities:
         response = rate_handler(requests.get, ('https://api.rockgympro.com/v1/facilities',),
                                 {"auth": (self.config['api_user'], self.config['api_key'])})
 
-        time_extracted = datetime.strptime(response['rgpApiTime'], "%Y-%m-%d %H:%M:%S").astimezone(UTC)
+        time_extracted = format_date(response['rgpApiTime'])
 
         needs_state_update = False
         has_sent_schema = False
