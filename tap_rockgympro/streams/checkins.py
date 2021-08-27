@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 from tap_rockgympro.utils import format_date, format_date_iso
 from tap_rockgympro.mixins import FacilityStream
 
@@ -19,6 +21,6 @@ class Checkins(FacilityStream):
         url = super().get_url(code, page, bookmark_time)
 
         if bookmark_time:
-            url += '&startDateTime=' + bookmark_time.strftime('%Y-%m-%d %H:%M:%S')
+            url += '&startDateTime=' + (bookmark_time - timedelta(hours=24)).strftime('%Y-%m-%d %H:%M:%S')
 
         return url

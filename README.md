@@ -17,6 +17,9 @@ Caveats:
 - Customers endpoint
     - There is no way to loop through all of the customers so customers are fetched as a byproduct of other endpoints that reference customers.
     For example, bookings reference customers so we batch booking records to fetch several customers first.
+- Checkin endpoint
+    - This endpoint can only filter by the check in date+time. So we would miss all of the checkouts.  To prevent having to loop through all checkins
+    we start from 24 hours before the last time check.
 - Timezones
     - I'm still not sure about timezones.  The Facilities endpoint doesn't return any timezones so this tap assumes all times are in UTC (which is probably incorrect)
 
