@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from setuptools import setup
+from setuptools import setup, find_packages
 
 setup(
     name="tap-rockgympro",
@@ -17,7 +17,7 @@ setup(
     [console_scripts]
     tap-rockgympro=tap_rockgympro:main
     """,
-    packages=["tap_rockgympro"],
+    packages=find_packages(include=['tap_rockgympro', 'tap_rockgympro.*']),
     package_data = {
         "schemas": ["tap_rockgympro/schemas/*.json"]
     },
