@@ -1,7 +1,7 @@
 import singer
 
-from .streams import Bookings, Customers, Facilities
-from .utils import discover
+from tap_rockgympro.streams import Bookings, Customers, Facilities
+from tap_rockgympro.utils import discover
 
 
 class Syncer:

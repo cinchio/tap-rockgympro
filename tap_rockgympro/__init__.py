@@ -1,11 +1,10 @@
 import json
 
-import singer
-from singer import utils
+from singer import utils, get_logger
 from tap_rockgympro.syncer import Syncer
 from tap_rockgympro.utils import discover
 
-LOGGER = singer.get_logger()
+LOGGER = get_logger()
 REQUIRED_CONFIG_KEYS = ['api_user', 'api_key']
 
 

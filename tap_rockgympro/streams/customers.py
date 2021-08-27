@@ -4,7 +4,7 @@ import requests
 import singer
 from pytz import UTC
 
-from ..utils import rate_handler
+from tap_rockgympro.utils import rate_handler
 
 # Customer endpoint only allows 25 at a time.
 BATCH_SIZE = 25
