@@ -1,4 +1,4 @@
-from datetime import datetime
+from dateutil import parser
 import requests
 import singer
 
@@ -23,8 +23,8 @@ class FacilityStream(Stream):
 
     def get_bookmark_time(self, facility_code):
         # We save bokomarks based on facility code.
-        time = self.config.get(self.stream['stream'], {}).get('bookmark_time', {}).get(facility_code)
-        return datetime.fromisoformat(time) if time else None
+        time = self.state.get(self.stream['stream'], {}).get('bookmark_time', {}).get(facility_code)
+        return parser.isoparse(time) if time else None
 
     def set_bookmark_time(self, facility_code, bookmark_time):
         if self.stream['stream'] not in self.state:
