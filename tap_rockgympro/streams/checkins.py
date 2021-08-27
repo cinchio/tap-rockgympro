@@ -1,10 +1,10 @@
-from tap_rockgympro.utils import format_date
+from tap_rockgympro.utils import format_date, format_date_iso
 from tap_rockgympro.mixins import FacilityStream
 
 class Checkins(FacilityStream):
     def format_record(self, record):
         record['postDate'] = format_date(record['postDate']).isoformat()
-        record['checkoutPostDate'] = format_date(record['checkoutPostDate']).isoformat()
+        record['checkoutPostDate'] = format_date_iso(record['checkoutPostDate'])
         return record
 
     def get_updated_time(self, record):

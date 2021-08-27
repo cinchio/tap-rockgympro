@@ -46,3 +46,8 @@ def format_date(item):
         return None
 
     return datetime.strptime(item, "%Y-%m-%d %H:%M:%S").astimezone(UTC)
+
+
+def format_date_iso(item):
+    date = format_date(item)
+    return None if not date else date.isoformat()

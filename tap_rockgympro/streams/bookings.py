@@ -1,4 +1,4 @@
-from tap_rockgympro.utils import format_date
+from tap_rockgympro.utils import format_date, format_date_iso
 from tap_rockgympro.mixins import FacilityStream
 
 class Bookings(FacilityStream):
@@ -17,7 +17,7 @@ class Bookings(FacilityStream):
     def format_record(self, record):
         record['bookingDate'] = format_date(record['bookingDate']).isoformat()
         record['originalBookedTime'] = format_date(record['originalBookedTime']).isoformat()
-        record['cancelledOn'] = format_date(record['cancelledOn']).isoformat()
+        record['cancelledOn'] = format_date_iso(record['cancelledOn'])
         return record
 
     def get_updated_time(self, record):
