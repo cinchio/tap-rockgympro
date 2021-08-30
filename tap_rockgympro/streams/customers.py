@@ -2,23 +2,22 @@ import requests
 import singer
 
 from tap_rockgympro.utils import rate_handler, format_date, format_date_iso
+from tap_rockgympro.mixins import Stream
 
 # Customer endpoint only allows 25 at a time.
 BATCH_SIZE = 25
 
 
-class Customers:
+class Customers(Stream):
     # Keep track of which IDs we've already sent so we don't send them needlessly
     cached_ids = None
     has_sent_schema = False
 
     def __init__(self, stream, config, state):
-        self.stream = stream
-        self.config = config
-        self.state = state
+        super().__init__(stream, config, state)
         self.cached_ids = set()
 
-    def process(self, ids):
+    def process(self, ids, facility_code):
         # RockGymPro's API requires a customer ID to get customers.  They have no endpoint for looping through all customers
         ids_to_sync = list(ids - self.cached_ids)
 
@@ -28,7 +27,7 @@ class Customers:
                 f"https://api.rockgympro.com/v1/customers?customerGuid={','.join(ids_to_sync[start:start+BATCH_SIZE])}",
             ), {"auth": (self.config['api_user'], self.config['api_key'])})
 
-            time_extracted = format_date(response['rgpApiTime'])
+            time_extracted = format_date(response['rgpApiTime'], self.get_timezone(facility_code))
 
             for record in response['customer']:
                 if not self.has_sent_schema:
@@ -36,7 +35,7 @@ class Customers:
                     self.has_sent_schema = True
 
                 # Format records
-                record['lastRecordEdit'] = format_date_iso(record['lastRecordEdit'])
+                record['lastRecordEdit'] = format_date_iso(record['lastRecordEdit'], self.get_timezone(facility_code))
 
                 singer.write_record(self.stream['stream'], record, time_extracted=time_extracted)
 

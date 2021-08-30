@@ -14,16 +14,16 @@ class Bookings(FacilityStream):
     from the batches of bookings we pull.
     """
 
-    def format_record(self, record):
-        record['bookingDate'] = format_date(record['bookingDate']).isoformat()
-        record['originalBookedTime'] = format_date(record['originalBookedTime']).isoformat()
-        record['cancelledOn'] = format_date_iso(record['cancelledOn'])
+    def format_record(self, record, facility_code):
+        record['bookingDate'] = format_date_iso(record['bookingDate'], self.get_timezone(facility_code))
+        record['originalBookedTime'] = format_date_iso(record['originalBookedTime'], self.get_timezone(facility_code))
+        record['cancelledOn'] = format_date_iso(record['cancelledOn'], self.get_timezone(facility_code))
         return record
 
-    def get_updated_time(self, record):
-        booking_date = format_date(record['bookingDate'])
-        cancelled_on = format_date(record['cancelledOn'])
+    def get_updated_time(self, record, facility_code):
+        booking_date = format_date(record['bookingDate'], self.get_timezone(facility_code))
+        cancelled_on = format_date(record['cancelledOn'], self.get_timezone(facility_code))
         return booking_date if not cancelled_on or booking_date > cancelled_on else cancelled_on
 
-    def get_created_time(self, record):
-        return format_date(record['bookingDate'])
+    def get_created_time(self, record, facility_code):
+        return format_date(record['bookingDate'], self.get_timezone(facility_code))

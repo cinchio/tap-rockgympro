@@ -1,8 +1,9 @@
 from dateutil import parser
 import requests
 import singer
+import pytz
 
-from tap_rockgympro.utils import rate_handler, format_date
+from tap_rockgympro.utils import rate_handler
 
 class Stream:
     stream = None
@@ -13,6 +14,13 @@ class Stream:
         self.stream = stream
         self.config = config
         self.state = state
+
+    def get_timezone(self, facility_code):
+        tz = self.config.get('timezones', {}).get(facility_code)
+        if tz:
+            return pytz.timezone(tz)
+
+        return pytz.UTC
 
 class FacilityStream(Stream):
     customer_stream = None
@@ -35,13 +43,13 @@ class FacilityStream(Stream):
 
         self.state[self.stream['stream']]['bookmark_time'][facility_code] = bookmark_time.isoformat()
 
-    def format_record(self, record):
+    def format_record(self, record, facility_code):
         return record
 
-    def get_updated_time(self, record):
+    def get_updated_time(self, record, facility_code):
         raise NotImplementedError
 
-    def get_created_time(self, record):
+    def get_created_time(self, record, facility_code):
         raise NotImplementedError
 
     def get_url(self, code, page, bookmark_time):
@@ -71,9 +79,9 @@ class FacilityStream(Stream):
 
                 for record in response[self.stream['stream']]:
                     # format record
-                    updated_time = self.get_updated_time(record)
-                    created_time = self.get_created_time(record)
-                    record = self.format_record(record)
+                    updated_time = self.get_updated_time(record, code)
+                    created_time = self.get_created_time(record, code)
+                    record = self.format_record(record, code)
 
                     if not new_bookmark_time or created_time > new_bookmark_time:
                         # We've hit a new record.
@@ -88,7 +96,7 @@ class FacilityStream(Stream):
                     # Fetch and output customers for these records
                     customers = {record['customerGuid'] for record in records}
                     if customers:
-                        self.customer_stream.process(customers)
+                        self.customer_stream.process(customers, code)
 
                     if not has_sent_schema:
                         # Output schema if we haven't yet

@@ -2,15 +2,9 @@ import requests
 import singer
 
 from tap_rockgympro.utils import rate_handler, format_date
+from tap_rockgympro.mixins import Stream
 
-
-class Facilities:
-
-    def __init__(self, stream, config, state):
-        self.stream = stream
-        self.config = config
-        self.state = state
-
+class Facilities(Stream):
     def process(self):
         response = rate_handler(requests.get, ('https://api.rockgympro.com/v1/facilities',),
                                 {"auth": (self.config['api_user'], self.config['api_key'])})

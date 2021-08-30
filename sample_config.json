@@ -1,0 +1,8 @@
+{
+    "api_user": "YOUR API USER",
+    "api_key": "YOUR API KEY",
+    "timezones": {
+        "ABC": "America/Denver",
+        "DEF": "America/Denver"
+    }
+}

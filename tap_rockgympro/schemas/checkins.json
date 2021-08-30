@@ -61,6 +61,6 @@
         }
     },
     "key_properties": [
-        "bookingId"
+        "checkinId"
     ]
 }

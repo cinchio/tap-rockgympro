@@ -1,18 +1,18 @@
-from tap_rockgympro.utils import format_date
+from tap_rockgympro.utils import format_date, format_date_iso
 from tap_rockgympro.mixins import FacilityStream
 
 
 class Invoices(FacilityStream):
-    def format_record(self, record):
-        record['invoicePostDate'] = format_date(record['invoicePostDate']).isoformat()
-        record['payment']['postdate'] = format_date(record['payment']['postdate']).isoformat()
+    def format_record(self, record, facility_code):
+        record['invoicePostDate'] = format_date_iso(record['invoicePostDate'], self.get_timezone(facility_code))
+        record['payment']['postdate'] = format_date_iso(record['payment']['postdate'], self.get_timezone(facility_code))
         return record
 
-    def get_updated_time(self, record):
-        return format_date(record['invoicePostDate'])
+    def get_updated_time(self, record, facility_code):
+        return format_date(record['invoicePostDate'], self.get_timezone(facility_code))
 
-    def get_created_time(self, record):
-        return format_date(record['invoicePostDate'])
+    def get_created_time(self, record, facility_code):
+        return format_date(record['invoicePostDate'], self.get_timezone(facility_code))
 
     def get_url(self, code, page, bookmark_time):
         url = super().get_url(code, page, bookmark_time)

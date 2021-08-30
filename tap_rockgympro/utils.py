@@ -28,26 +28,23 @@ def discover():
 
 
 def rate_handler(func, args, kwargs):
-    # If we get a 429 rate limit error exception wait exponentially longer until the rate limit ends
-    timer = 1
+    # If we get a 429 rate limit error exception wait until the rate limit ends
     while True:
         response = func(*args, **kwargs)
-        response = response.json()
+        response_json = response.json()
 
-        if response.get('status') == 429:
-            sleep(timer)
-            # Double the next wait time
-            timer *= 2
+        if response_json.get('status') == 429:
+            sleep(int(response.headers.get('retry-after') or 1))
         else:
-            return response
+            return response_json
 
-def format_date(item):
+def format_date(item, timezone=None):
     if item == '0000-00-00 00:00:00' or not item:
         return None
 
-    return datetime.strptime(item, "%Y-%m-%d %H:%M:%S").astimezone(UTC)
+    return datetime.strptime(item, "%Y-%m-%d %H:%M:%S").astimezone(timezone or UTC)
 
 
-def format_date_iso(item):
-    date = format_date(item)
+def format_date_iso(item, timezone=None):
+    date = format_date(item, timezone)
     return None if not date else date.isoformat()
