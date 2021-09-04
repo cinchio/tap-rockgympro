@@ -23,7 +23,7 @@ class Bookings(FacilityStream):
     """
 
     def format_record(self, record, facility_code):
-        # If state's oldest active record doesn't exist or is inactive and this record is active or its bookingDate is closer to now set it on the state
+        # Save the oldest active record so we don't pull all bookings everytime.
         start_record = nested_get(self.state, f"{self.stream['stream']}.start_date.{facility_code}")
         if (
             not start_record or
