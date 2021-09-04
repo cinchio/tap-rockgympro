@@ -11,6 +11,9 @@
             "customerGuid": {
                 "type": "string"
             },
+            "facilityCode": {
+                "type": "string"
+            },
             "postDate": {
                 "type": "string",
                 "format": "date-time"

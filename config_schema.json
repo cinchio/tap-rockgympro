@@ -1,0 +1,42 @@
+{
+    "title": "Rock Gym Pro Integration Config",
+    "type": "object",
+    "required": ["api_key", "api_user"],
+    "properties": {
+        "api_user": {
+            "title": "API User",
+            "description": "Username for the API",
+            "type": "string"
+        },
+        "api_key": {
+            "title": "API Key",
+            "description": "Password for the API",
+            "type": "string"
+        },
+        "timezones": {
+            "title": "Timezones",
+            "description": "Timezones for each facility must be specified or the booking dates will be incorrect",
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "title": "Facility Code",
+                        "description": "3-digit facility code like ABC",
+                        "type": "string"
+                    },
+                    "timezone": {
+                        "title": "Timezone",
+                        "description": "Timezone of the facility",
+                        "type":
+                            "string",
+                        "enum": [
+                            "US/Alaska", "US/Arizona", "US/Central", "US/East-Indiana", "US/Eastern", "US/Hawaii",
+                            "US/Indiana-Starke", "US/Michigan", "US/Mountain", "US/Pacific", "US/Pacific-New"
+                        ]
+                    }
+                }
+            }
+        }
+    }
+}

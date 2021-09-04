@@ -11,6 +11,9 @@
             "customerGuid": {
                 "type": "string"
             },
+            "facilityCode": {
+                "type": "string"
+            },
             "chargeToCustomerId": {
                 "type": "integer"
             },

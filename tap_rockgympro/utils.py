@@ -3,6 +3,7 @@ import pkg_resources
 from time import sleep
 from datetime import datetime
 from pytz import UTC
+from singer import logger
 
 from tap_rockgympro.consts import ORDERED_STREAM_NAMES
 
@@ -16,7 +17,6 @@ def load_schemas():
 
     return schemas
 
-
 def discover():
     raw_schemas = load_schemas()
     streams = []
@@ -26,7 +26,6 @@ def discover():
 
     return {'streams': streams}
 
-
 def rate_handler(func, args, kwargs):
     # If we get a 429 rate limit error exception wait until the rate limit ends
     while True:
@@ -34,7 +33,9 @@ def rate_handler(func, args, kwargs):
         response_json = response.json()
 
         if response_json.get('status') == 429:
-            sleep(int(response.headers.get('retry-after') or 1))
+            seconds = max(int(response.headers.get('retry-after') or 1), 1)
+            logger.log_info(f'Hit rate limit. Waiting {seconds} seconds')
+            sleep(seconds)
         else:
             return response_json
 

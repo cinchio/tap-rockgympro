@@ -7,6 +7,7 @@ class Checkins(FacilityStream):
     def format_record(self, record, facility_code):
         record['postDate'] = format_date_iso(record['postDate'], self.get_timezone(facility_code))
         record['checkoutPostDate'] = format_date_iso(record['checkoutPostDate'], self.get_timezone(facility_code))
+        record['facilityCode'] = facility_code
         return record
 
     def get_updated_time(self, record, facility_code):

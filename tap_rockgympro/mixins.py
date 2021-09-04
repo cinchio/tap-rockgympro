@@ -1,6 +1,7 @@
 from dateutil import parser
 import requests
 import singer
+from singer import logger
 import pytz
 
 from tap_rockgympro.utils import rate_handler
@@ -9,14 +10,19 @@ class Stream:
     stream = None
     config = None
     state = None
+    timezones = None
 
     def __init__(self, stream, config, state):
         self.stream = stream
         self.config = config
         self.state = state
 
+        self.timezones = {}
+        for timezone in config.get('timezones', []):
+            self.timezones[timezone['code']] = timezone['timezone']
+
     def get_timezone(self, facility_code):
-        tz = self.config.get('timezones', {}).get(facility_code)
+        tz = self.timezones.get(facility_code)
         if tz:
             return pytz.timezone(tz)
 
@@ -32,6 +38,7 @@ class FacilityStream(Stream):
     def get_bookmark_time(self, facility_code):
         # We save bokomarks based on facility code.
         time = self.state.get(self.stream['stream'], {}).get('bookmark_time', {}).get(facility_code)
+
         return parser.isoparse(time) if time else None
 
     def set_bookmark_time(self, facility_code, bookmark_time):
@@ -67,6 +74,9 @@ class FacilityStream(Stream):
             # new_bookmark_time is our cached bookmark time that we update and send to the state
             new_bookmark_time = bookmark_time = self.get_bookmark_time(code)
 
+            logger.log_info(f"Syncing stream: {self.stream['stream']} facility code: {code}")
+            logger.log_info(f"Using bookmark time of {bookmark_time}")
+
             while not total_page or page < total_page:
                 # Loop through all of the pages.
                 records = []
@@ -82,6 +92,9 @@ class FacilityStream(Stream):
                     updated_time = self.get_updated_time(record, code)
                     created_time = self.get_created_time(record, code)
                     record = self.format_record(record, code)
+
+                    if not record:
+                        continue
 
                     if not new_bookmark_time or created_time > new_bookmark_time:
                         # We've hit a new record.

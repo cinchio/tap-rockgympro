@@ -1,6 +1,8 @@
 import requests
 import singer
 
+from singer import logger
+
 from tap_rockgympro.utils import rate_handler, format_date, format_date_iso
 from tap_rockgympro.mixins import Stream
 
@@ -19,15 +21,19 @@ class Customers(Stream):
 
     def process(self, ids, facility_code):
         # RockGymPro's API requires a customer ID to get customers.  They have no endpoint for looping through all customers
+
         ids_to_sync = list(ids - self.cached_ids)
 
         for start in range(0, len(ids_to_sync), BATCH_SIZE):
-
             response = rate_handler(requests.get, (
                 f"https://api.rockgympro.com/v1/customers?customerGuid={','.join(ids_to_sync[start:start+BATCH_SIZE])}",
             ), {"auth": (self.config['api_user'], self.config['api_key'])})
 
             time_extracted = format_date(response['rgpApiTime'], self.get_timezone(facility_code))
+
+            if 'customer' not in response:
+                logger.log_error(f"https://api.rockgympro.com/v1/customers?customerGuid={','.join(ids_to_sync[start:start+BATCH_SIZE])}")
+                logger.log_error(f'Missing customer key: {response}')
 
             for record in response['customer']:
                 if not self.has_sent_schema:
@@ -36,6 +42,10 @@ class Customers(Stream):
 
                 # Format records
                 record['lastRecordEdit'] = format_date_iso(record['lastRecordEdit'], self.get_timezone(facility_code))
+
+                if record['bday'] == '0000-00-00':
+                    # Remove bad birthdays
+                    record['bday'] = None
 
                 singer.write_record(self.stream['stream'], record, time_extracted=time_extracted)
 

@@ -41,7 +41,7 @@ class Syncer:
             if not self.customer_stream:
                 raise Exception('Catalog needs to include customer stream if it includes checkins stream')
             return Checkins(stream, self.config, self.state, self.customer_stream)
-        elif stream_name == 'invoices':
+        if stream_name == 'invoices':
             if not self.customer_stream:
                 raise Exception('Catalog needs to include customer stream if it includes invoices stream')
             return Invoices(stream, self.config, self.state, self.customer_stream)

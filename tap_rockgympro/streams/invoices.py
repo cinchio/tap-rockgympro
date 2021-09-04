@@ -4,8 +4,14 @@ from tap_rockgympro.mixins import FacilityStream
 
 class Invoices(FacilityStream):
     def format_record(self, record, facility_code):
+        if 'customerGuid' not in record or not record['customerGuid']:
+            # We require a customer GUID for the records to work
+            return
+
         record['invoicePostDate'] = format_date_iso(record['invoicePostDate'], self.get_timezone(facility_code))
-        record['payment']['postdate'] = format_date_iso(record['payment']['postdate'], self.get_timezone(facility_code))
+        if record['payment']:
+            record['payment']['postdate'] = format_date_iso(record['payment']['postdate'], self.get_timezone(facility_code))
+        record['facilityCode'] = facility_code
         return record
 
     def get_updated_time(self, record, facility_code):
