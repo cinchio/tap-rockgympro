@@ -103,7 +103,7 @@ class FacilityStream(Stream):
 
                 if records:
                     # Fetch and output customers for these records
-                    customers = {record['customerGuid'] for record in records if record{'customerGuid'}}
+                    customers = {record['customerGuid'] for record in records if record['customerGuid']}
                     if customers:
                         self.customer_stream.process(customers, code)
 
