@@ -3,19 +3,22 @@ import requests
 import singer
 from singer import logger
 import pytz
+import copy
 
-from tap_rockgympro.utils import rate_handler
+from tap_rockgympro.utils import rate_handler, nested_set, nested_get
 
 class Stream:
     stream = None
     config = None
     state = None
+    original_state = None
     timezones = None
 
     def __init__(self, stream, config, state):
         self.stream = stream
         self.config = config
         self.state = state
+        self.original_state = copy.deepcopy(state)
 
         self.timezones = {}
         for timezone in config.get('timezones', []):
@@ -37,18 +40,11 @@ class FacilityStream(Stream):
 
     def get_bookmark_time(self, facility_code):
         # We save bokomarks based on facility code.
-        time = self.state.get(self.stream['stream'], {}).get('bookmark_time', {}).get(facility_code)
-
+        time = nested_get(self.state, f"{self.stream['stream']}.bookmark_time.{facility_code}")
         return parser.isoparse(time) if time else None
 
     def set_bookmark_time(self, facility_code, bookmark_time):
-        if self.stream['stream'] not in self.state:
-            self.state[self.stream['stream']] = {}
-
-        if 'bookmark_time' not in self.state[self.stream['stream']]:
-            self.state[self.stream['stream']]['bookmark_time'] = {}
-
-        self.state[self.stream['stream']]['bookmark_time'][facility_code] = bookmark_time.isoformat()
+        nested_set(self.state, f"{self.stream['stream']}.bookmark_time.{facility_code}", bookmark_time.isoformat())
 
     def format_record(self, record, facility_code):
         return record
