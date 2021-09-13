@@ -74,6 +74,9 @@ class FacilityStream(Stream):
             logger.log_info(f"Using bookmark time of {bookmark_time}")
 
             while not total_page or page < total_page:
+                page += 1
+
+                logger.log_info(f"Syncing page {page} of {total_page}")
                 # Loop through all of the pages.
                 records = []
                 response = rate_handler(requests.get,
@@ -89,7 +92,7 @@ class FacilityStream(Stream):
                     created_time = self.get_created_time(record, code)
                     record = self.format_record(record, code)
 
-                    if not record:
+                    if not record or not created_time or not updated_time:
                         continue
 
                     if not new_bookmark_time or created_time > new_bookmark_time:
@@ -115,9 +118,7 @@ class FacilityStream(Stream):
                     # Output records
                     singer.write_records(self.stream['stream'], records)
 
-                if not bookmark_time or new_bookmark_time > bookmark_time:
+                if new_bookmark_time and (not bookmark_time or new_bookmark_time > bookmark_time):
                     # If we have a new bookmark time set it to the state
                     self.set_bookmark_time(code, new_bookmark_time)
                     singer.write_state(self.state)
-
-                page += 1

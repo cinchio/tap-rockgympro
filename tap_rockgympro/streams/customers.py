@@ -25,6 +25,7 @@ class Customers(Stream):
         ids_to_sync = list(ids - self.cached_ids)
 
         for start in range(0, len(ids_to_sync), BATCH_SIZE):
+            logger.log_info(f"Querying customers page https://api.rockgympro.com/v1/customers?customerGuid={','.join(ids_to_sync[start:start+BATCH_SIZE])}")
             response = rate_handler(requests.get, (
                 f"https://api.rockgympro.com/v1/customers?customerGuid={','.join(ids_to_sync[start:start+BATCH_SIZE])}",
             ), {"auth": (self.config['api_user'], self.config['api_key'])})
