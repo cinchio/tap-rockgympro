@@ -74,14 +74,14 @@ class FacilityStream(Stream):
             logger.log_info(f"Using bookmark time of {bookmark_time}")
 
             while not total_page or page < total_page:
-                page += 1
-
                 logger.log_info(f"Syncing page {page} of {total_page}")
                 # Loop through all of the pages.
                 records = []
                 response = rate_handler(requests.get,
                                         (self.get_url(code, page, bookmark_time),),
                                         {"auth": (self.config['api_user'], self.config['api_key'])})
+
+                page += 1
 
                 if not total_page:
                     total_page = response['rgpApiPaging']['pageTotal'] or 1
