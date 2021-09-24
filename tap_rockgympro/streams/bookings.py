@@ -57,6 +57,4 @@ class Bookings(FacilityStream):
         if start_date_time:
             url += f'&startDateTime={start_date_time}'
 
-        logger.log_info(f'Querying page: {url}')
-
         return url

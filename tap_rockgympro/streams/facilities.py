@@ -21,7 +21,8 @@ class Facilities(Stream):
 
         for facility_code, record in response['facilities'].items():
             needs_state_update = True
-            self.state['facilities']['codes'].append(facility_code)
+            if facility_code not in self.state['facilities']['codes']:
+                self.state['facilities']['codes'].append(facility_code)
 
             if not has_sent_schema:
                 singer.write_schema(self.stream['stream'], self.stream['schema'], self.stream['key_properties'])

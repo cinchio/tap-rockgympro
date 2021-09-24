@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="tap-rockgympro",
-    version="0.1.8",
+    version="0.1.9",
     description="Singer.io tap for extracting RockGymPro data",
     author="Cinch",
     url="https://github.com/cinchio/tap-rockgympro",
