@@ -74,7 +74,7 @@ class FacilityStream(Stream):
             logger.log_info(f"Using bookmark time of {bookmark_time}")
 
             while not total_page or page <= total_page:
-                logger.log_info(f"Syncing page {page} of {total_page}")
+                logger.log_info(f"Syncing page {page} of {total_page or 1}")
                 # Loop through all of the pages.
                 records = []
                 response = rate_handler(requests.get,
