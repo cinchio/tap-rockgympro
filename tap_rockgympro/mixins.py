@@ -73,7 +73,7 @@ class FacilityStream(Stream):
             logger.log_info(f"Syncing stream: {self.stream['stream']} facility code: {code}")
             logger.log_info(f"Using bookmark time of {bookmark_time}")
 
-            while not total_page or page < total_page:
+            while not total_page or page <= total_page:
                 logger.log_info(f"Syncing page {page} of {total_page}")
                 # Loop through all of the pages.
                 records = []
