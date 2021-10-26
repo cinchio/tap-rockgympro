@@ -1,10 +1,20 @@
 from datetime import timedelta
+from singer import logger
+import requests
 
-from tap_rockgympro.utils import format_date, format_date_iso
+from tap_rockgympro.utils import format_date, format_date_iso, rate_handler
 from tap_rockgympro.mixins import FacilityStream
 
 class Checkins(FacilityStream):
     def format_record(self, record, facility_code):
+        if record['customerId'] == -100:
+            # Fetch remote checkin.
+            checkin_url = f"https://api.rockgympro.com/v1/checkins/facility/{record['remoteDatabaseTag']}/{record['remoteCheckinId']}"
+            response = rate_handler(requests.get, (checkin_url,), {"auth": (self.config['api_user'], self.config['api_key'])})
+
+            if 'checkin' in response:
+                record = response['checkin']
+
         record['postDate'] = format_date_iso(record['postDate'], self.get_timezone(facility_code))
         record['checkoutPostDate'] = format_date_iso(record['checkoutPostDate'], self.get_timezone(facility_code))
         record['facilityCode'] = facility_code
