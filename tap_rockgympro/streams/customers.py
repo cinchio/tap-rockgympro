@@ -1,9 +1,10 @@
 import requests
 import singer
+from datetime import datetime, timedelta
 
 from singer import logger
 
-from tap_rockgympro.utils import rate_handler, format_date, format_date_iso
+from tap_rockgympro.utils import nested_set, rate_handler, format_date, format_date_iso, nested_get
 from tap_rockgympro.mixins import Stream
 
 # Customer endpoint only allows 25 at a time.
@@ -19,8 +20,36 @@ class Customers(Stream):
         super().__init__(stream, config, state)
         self.cached_ids = set()
 
-    def process(self, ids, facility_code):
+    def process_state(self):
+        """
+        Due to the RockGymPro's many shortcomings in the API we are unable to get updates to customers unless they have a checkin
+        or similar API event.  We are now going to store in the cache/state customers that have had an event in the last 30 days
+        and query those customers.
+        """
+
+        thirty_days_ago = str(datetime.now() - timedelta(days=30))
+
+        # Loop over each facility
+        facility_codes = nested_get(self.state, 'facilities.codes') or {}
+
+        for code in facility_codes:
+            # Clear out customer IDs that are over 30 days old
+            stripped_guids = {
+                guid: last_date for guid, last_date in (nested_get(self.state, f'customers.guids.{code}') or {}).items() if last_date > thirty_days_ago
+            }
+
+            # Update state
+            nested_set(self.state, f'customers.guids.{code}', stripped_guids)
+            singer.write_state(self.state)
+
+            # Process all other customer IDs
+            self.process(stripped_guids.keys(), code)
+
+
+    def process(self, ids=None, facility_code=None):
         # RockGymPro's API requires a customer ID to get customers.  They have no endpoint for looping through all customers
+        if ids is None:
+            return self.process_state()
 
         ids_to_sync = list(ids - self.cached_ids)
 

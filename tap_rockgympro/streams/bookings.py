@@ -30,7 +30,11 @@ class Bookings(FacilityStream):
             (not is_active(record, self.get_timezone(facility_code)) and record['bookingDate'] > start_record['bookingDate']) or
             (is_active(record, self.get_timezone(facility_code)) and is_active(start_record, self.get_timezone(facility_code)) and record['bookingDate'] < start_record['bookingDate'])
         ):
-            start_record = copy.deepcopy(record)
+            start_record = {
+                "bookingDate": record["bookingDate"],
+                "originalBookedTime": record["originalBookedTime"],
+                "cancelledOn": record["cancelledOn"],
+            }
             nested_set(self.state, f"{self.stream['stream']}.start_date.{facility_code}", start_record)
             singer.write_state(self.state)
 

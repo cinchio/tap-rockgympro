@@ -45,15 +45,13 @@ class Syncer:
             if not self.customer_stream:
                 raise Exception('Catalog needs to include customer stream if it includes invoices stream')
             return Invoices(stream, self.config, self.state, self.customer_stream)
+        if stream_name == 'customers':
+            self.customer_stream = Customers(stream, self.config, self.state)
+            return self.customer_stream
 
     def sync(self):
         # Loop through streams
         for stream_name, stream in self.catalog['streams']:
-            if stream_name == 'customers':
-                # We can't directly stream customers, they're a side effect from other streams
-                self.customer_stream = Customers(stream, self.config, self.state)
-                continue
-
             processor = self.get_stream(stream_name, stream)
 
             if not processor:

@@ -1,4 +1,5 @@
 from dateutil import parser
+from datetime import datetime
 import requests
 import singer
 from singer import logger
@@ -109,6 +110,12 @@ class FacilityStream(Stream):
                     customers = {record['customerGuid'] for record in records if record['customerGuid']}
                     if customers:
                         self.customer_stream.process(customers, code)
+
+                        # Update active customers
+                        active_customers = nested_get(self.state, f'customers.guids.{code}') or {}
+                        for guid in customers:
+                            active_customers[guid] = str(datetime.now())
+                        nested_set(self.state, f'customers.guids.{code}', active_customers)
 
                     if not has_sent_schema:
                         # Output schema if we haven't yet
