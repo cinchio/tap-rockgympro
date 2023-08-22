@@ -1,3 +1,7 @@
+import json
+from uuid import uuid4
+from singer import logger
+
 from tap_rockgympro.streams import Bookings, Checkins, Customers, Facilities, Invoices
 from tap_rockgympro.utils import discover
 from tap_rockgympro.consts import ORDERED_STREAM_NAMES
@@ -58,4 +62,17 @@ class Syncer:
                 # We couldn't find a streamer for this stream
                 continue
 
+            log_id = str(uuid4())
+            logger.log_info(json.dumps({
+                "id": log_id,
+                "event": "START",
+                "stream": stream["stream"],
+            }))
+
             processor.process()
+
+            logger.log_info(json.dumps({
+                "id": log_id,
+                "event": "END",
+                "stream": stream["stream"],
+            }))
