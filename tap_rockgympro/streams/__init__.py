@@ -4,4 +4,4 @@ from .customers import Customers
 from .facilities import Facilities
 from .invoices import Invoices
 
-__all__ = ['Facilities', 'Bookings', 'Customers', 'Checkins', 'Invoices']
+__all__ = ["Facilities", "Bookings", "Customers", "Checkins", "Invoices"]
