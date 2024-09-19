@@ -1,5 +1,6 @@
+from __future__ import annotations
 from dateutil import parser
-from datetime import datetime
+from datetime import datetime, tzinfo
 import requests
 import singer
 from singer import logger
@@ -25,11 +26,10 @@ class Stream:
         for timezone in config.get('timezones', []):
             self.timezones[timezone['code']] = timezone['timezone']
 
-    def get_timezone(self, facility_code):
+    def get_timezone(self: Stream, facility_code: str) -> tzinfo:
         tz = self.timezones.get(facility_code)
         if tz:
             return pytz.timezone(tz)
-
         return pytz.UTC
 
 class FacilityStream(Stream):
@@ -82,10 +82,13 @@ class FacilityStream(Stream):
                                         (self.get_url(code, page, bookmark_time),),
                                         {"auth": (self.config['api_user'], self.config['api_key'])})
 
-                page += 1
+                # page += 1 # TODO fix
 
                 if not total_page:
                     total_page = response['rgpApiPaging']['pageTotal'] or 1
+
+                # TODO remove
+                page = total_page
 
                 for record in response[self.stream['stream']]:
                     # format record
@@ -104,6 +107,7 @@ class FacilityStream(Stream):
                         # Only include records that are after the state's bookmark time
                         # Instead of sending records straight to the stream batch them so we can check the customers first
                         records.append(record)
+                    break
 
                 if records:
                     # Fetch and output customers for these records

@@ -1,7 +1,7 @@
 import json
 import pkg_resources
 from time import sleep
-from datetime import datetime
+from datetime import datetime, tzinfo
 from pytz import UTC
 from singer import logger
 
@@ -45,6 +45,26 @@ def format_date(item, timezone=None):
 
     return datetime.strptime(item, "%Y-%m-%d %H:%M:%S").astimezone(timezone or UTC)
 
+def format_transaction_date(item: str, timezone: tzinfo) -> str:
+    """
+    To prevent breaking other streams, just editing transaction at the moment.
+    TODO replace format_date as needed where applicable
+    """
+    if item == '0000-00-00 00:00:00' or not item:
+        return None
+    naive_datetime = datetime.strptime(item, "%Y-%m-%d %H:%M:%S")
+    timezone: tzinfo = timezone or UTC # TODO should it be or utc?
+    tz_aware_datetime = timezone.localize(naive_datetime)
+    return tz_aware_datetime
+
+def format_date_transaction_iso(item: str, timezone: tzinfo) -> str:
+    """
+    To prevent breaking other streams, just editing transaction at the moment.
+    TODO replace format_date_iso as needed where applicable
+    """
+    date = format_transaction_date(item, timezone)
+    iso_format =  None if not date else date.isoformat()
+    return iso_format
 
 def format_date_iso(item, timezone=None):
     date = format_date(item, timezone)
