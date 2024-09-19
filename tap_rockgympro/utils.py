@@ -53,7 +53,7 @@ def format_date(item, timezone=None):
     return datetime.strptime(item, "%Y-%m-%d %H:%M:%S").astimezone(timezone or UTC)
 
 
-def format_transaction_date(item: str, timezone: tzinfo) -> str:
+def format_transaction_date(item: str, timezone) -> datetime | None:
     """
     To prevent breaking other streams, just editing transaction at the moment.
     TODO replace format_date as needed where applicable
@@ -61,12 +61,12 @@ def format_transaction_date(item: str, timezone: tzinfo) -> str:
     if item == "0000-00-00 00:00:00" or not item:
         return None
     naive_datetime = datetime.strptime(item, "%Y-%m-%d %H:%M:%S")
-    timezone: tzinfo = timezone or UTC  # TODO should it be or utc?
+    timezone = timezone or UTC  # TODO should it be or utc?
     tz_aware_datetime = timezone.localize(naive_datetime)
     return tz_aware_datetime
 
 
-def format_date_transaction_iso(item: str, timezone: tzinfo) -> str:
+def format_date_transaction_iso(item: str, timezone: tzinfo) -> str | None:
     """
     To prevent breaking other streams, just editing transaction at the moment.
     TODO replace format_date_iso as needed where applicable
