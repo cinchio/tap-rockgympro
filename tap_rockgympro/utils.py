@@ -1,5 +1,6 @@
 import json
 import pkg_resources
+from typing import Union
 from time import sleep
 from datetime import datetime, tzinfo
 from pytz import UTC
@@ -53,7 +54,7 @@ def format_date(item, timezone=None):
     return datetime.strptime(item, "%Y-%m-%d %H:%M:%S").astimezone(timezone or UTC)
 
 
-def format_transaction_date(item: str, timezone) -> datetime | None:
+def format_transaction_date(item: str, timezone) -> Union[datetime, None]:
     """
     To prevent breaking other streams, just editing transaction at the moment.
     TODO replace format_date as needed where applicable
@@ -66,7 +67,7 @@ def format_transaction_date(item: str, timezone) -> datetime | None:
     return tz_aware_datetime
 
 
-def format_date_transaction_iso(item: str, timezone: tzinfo) -> str | None:
+def format_date_transaction_iso(item: str, timezone: tzinfo) -> Union[str, None]:
     """
     To prevent breaking other streams, just editing transaction at the moment.
     TODO replace format_date_iso as needed where applicable
