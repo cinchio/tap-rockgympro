@@ -37,6 +37,7 @@ class Stream:
 class FacilityStream(Stream):
     customer_stream = None
 
+    # TODO what are the types
     def __init__(self, stream, config, state, customer_stream):
         self.customer_stream = customer_stream
         super().__init__(stream, config, state)
@@ -116,7 +117,6 @@ class FacilityStream(Stream):
                         # Only include records that are after the state's bookmark time
                         # Instead of sending records straight to the stream batch them so we can check the customers first
                         records.append(record)
-                    break
 
                 if records:
                     # Fetch and output customers for these records
